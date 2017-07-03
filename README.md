@@ -53,7 +53,7 @@ For example
 
 is the same as 
 
-   {>>}((([)
+    {>>}((([)
 
 and 
 
