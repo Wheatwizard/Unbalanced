@@ -67,4 +67,4 @@ trim x
 
 interpret :: String -> [Integer] -> [Integer]
 
-interpret source input = trim$ (\(a,b) -> (reverse a) ++ b)(f (pad source) ((reverse input), []))
+interpret source input = trim$ (\(a,b) -> (reverse a) ++ b)(f (pad source) ((trim$ reverse input), []))
