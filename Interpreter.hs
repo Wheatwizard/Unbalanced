@@ -12,7 +12,7 @@ outside :: String -> Int -> String
 outside ('}':ax) 1 = ax
 outside ('{':ax) z = '{':(outside ax (z+1))
 outside ('}':ax) z = '}':(outside ax (z-1))
-outside (a:ax) z = a:(outside ax z)
+outside (a:ax) z = outside ax z
 
 
 f :: String -> ([Integer], [Integer]) -> ([Integer], [Integer])
@@ -36,14 +36,15 @@ f ('>':ax) (lx, []    ) = f ax ((0:lx), [])
 f ('<':ax) ((l:lx), rx) = f ax (lx, (l:rx))
 f ('<':ax) ([],     rx) = f ax ([], (0:rx))
 
-f ('{':ax) (l:lx, rx) = f (outside ax 1) (run (inside ax 1) l (f (inside ax 1) (l:lx, rx)))
-f ('{':ax) ([], rx) = f ('{':ax) ([0], rx)
+f ('{':ax) state@(l:lx, rx) = f (outside ax 1) (run code l (f code state))
+ where code = inside ax 1
+f s@('{':ax) ([], rx) = f s ([0], rx)
 
 run :: String -> Integer -> ([Integer], [Integer]) -> ([Integer],[Integer])
-run s t ([], rx) = run s t ([0], rx)
-run s t (l:lx, rx)
- | t == l = (l:lx, rx)
- | t /= l = run s t (f s (l:lx, rx))
+run source t ([], rx) = run source t ([0], rx)
+run source t state@(l:_, _)
+ | t == l = state
+ | t /= l = run source t (f source state)
 
 padding :: String -> (Int, Int) -> (Int, Int)
 
