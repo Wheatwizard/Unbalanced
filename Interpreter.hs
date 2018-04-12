@@ -40,6 +40,8 @@ f ('{':ax) state@(l:lx, rx) = f (outside ax 1) (run code l (f code state))
  where code = inside ax 1
 f s@('{':ax) ([], rx) = f s ([0], rx)
 
+f (_:ax) b = f ax b
+
 run :: String -> Integer -> ([Integer], [Integer]) -> ([Integer],[Integer])
 run source t ([], rx) = run source t ([0], rx)
 run source t state@(l:_, _)
